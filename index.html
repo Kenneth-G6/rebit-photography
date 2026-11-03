@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REBIT · 创意摄影作品集</title>
+<meta name="description" content="REBIT 创意摄影作品集 —— 光影、结构与情绪的实验。正在申请视觉中国签约供稿人。">
+<meta property="og:title" content="REBIT · 创意摄影作品集">
+<meta property="og:type" content="website">
+<meta property="og:description" content="REBIT 创意摄影作品集，光影、结构与情绪的实验。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='6' width='22' height='20' rx='2' fill='none' stroke='%23D8A24A' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23D8A24A' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%23D8A24A'/%3E%3Cpath d='M4 11h5M23 11h5' stroke='%23D8A24A' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="preconnect" href="https://sf3-scmcdn-cn.feishucdn.com" crossorigin>
+<link rel="preload" href="https://sf3-scmcdn-cn.feishucdn.com/obj/feishu-static/lark-miaoda-fonts/fonts/noto-serif-sc/4d17a19f0a57.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@700;900&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap">
+<style>
+/* ===== 基础与 token ===== */
+:root{
+  --bg:#0B0C0D;
+  --bg-soft:#121417;
+  --panel:#16181B;
+  --text:#EDEAE2;
+  --text-dim:#A9A79F;
+  --accent:#D8A24A;
+  --line:rgba(255,255,255,.09);
+  --serif:"Noto Serif SC",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --maxw:1200px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--accent);color:#0B0C0D}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 胶片颗粒 overlay */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+/* ===== 顶栏 ===== */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:linear-gradient(to bottom, rgba(11,12,13,.92), rgba(11,12,13,0));
+  transition:background .3s;
+}
+.site-header.scrolled{background:rgba(11,12,13,.94);border-bottom:1px solid var(--line)}
+.brand{
+  font-family:var(--serif);font-weight:900;font-size:20px;letter-spacing:.06em;
+}
+.brand .dot{color:var(--accent)}
+.nav-links{display:none;align-items:center;gap:28px}
+.nav-links a{font-size:14px;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--accent)}
+.menu-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:6px;
+}
+.menu-btn span{display:block;width:18px;height:2px;background:var(--text);position:relative}
+.menu-btn span::before,.menu-btn span::after{
+  content:"";position:absolute;left:0;width:18px;height:2px;background:var(--text);
+}
+.menu-btn span::before{top:-6px}
+.menu-btn span::after{top:6px}
+.mobile-menu{
+  position:fixed;inset:0;z-index:55;background:rgba(11,12,13,.97);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+  opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;
+}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font-family:var(--serif);font-size:30px;color:var(--text)}
+.mobile-menu a:hover{color:var(--accent)}
+.mobile-menu .close-btn{
+  position:absolute;top:18px;right:20px;width:44px;height:44px;
+  background:none;border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:18px;
+}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(11,12,13,.55), rgba(11,12,13,.35) 45%, rgba(11,12,13,.92));
+}
+.hero-content{
+  position:relative;z-index:2;text-align:center;padding:0 22px;max-width:760px;
+}
+.hero-name{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(64px, 17vw, 148px);
+  line-height:1.02;letter-spacing:.08em;
+  text-shadow:0 4px 40px rgba(0,0,0,.6);
+}
+.hero-name .dot{color:var(--accent)}
+.hero-sub{
+  margin-top:14px;
+  font-size:13px;letter-spacing:.34em;color:var(--text-dim);
+  text-transform:uppercase;
+}
+.hero-line{
+  margin-top:26px;max-width:520px;margin-left:auto;margin-right:auto;
+  font-size:15px;color:var(--text-dim);
+}
+.hero-cta{
+  margin-top:34px;display:inline-flex;align-items:center;gap:10px;
+  padding:13px 34px;border:1px solid var(--accent);border-radius:999px;
+  color:var(--text);font-size:14px;letter-spacing:.08em;
+  transition:background .25s,color .25s;
+}
+.hero-cta:hover{background:var(--accent);color:#0B0C0D}
+.scroll-hint{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;
+  width:1px;height:52px;background:var(--line);overflow:hidden;
+}
+.scroll-hint::after{
+  content:"";display:block;width:1px;height:16px;background:var(--accent);
+  animation:drift 1.8s cubic-bezier(.22,1,.36,1) infinite;
+}
+@keyframes drift{0%{transform:translateY(-16px)}60%{transform:translateY(52px)}100%{transform:translateY(52px)}}
+
+/* ===== 区块通用 ===== */
+.section{padding:88px 20px}
+.wrap{max-width:var(--maxw);margin:0 auto}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:38px}
+.sec-index{font-family:var(--serif);color:var(--accent);font-size:15px}
+.sec-title{font-family:var(--serif);font-weight:700;font-size:clamp(28px,6vw,44px);letter-spacing:.04em}
+.sec-en{font-size:12px;letter-spacing:.3em;color:var(--text-dim);text-transform:uppercase}
+
+/* ===== 作品集 ===== */
+.works-grid{
+  display:grid;grid-template-columns:repeat(1,1fr);gap:18px;
+}
+.work-card{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel);cursor:pointer;
+}
+.work-card img{
+  width:100%;aspect-ratio:1/1;object-fit:cover;
+  transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .6s;
+}
+.work-card[data-ratio="34"] img{aspect-ratio:3/4}
+.work-card[data-ratio="43"] img{aspect-ratio:4/3}
+.work-card[data-ratio="11"] img{aspect-ratio:1/1}
+.work-card[data-ratio="169"] img{aspect-ratio:16/9}
+.work-card[data-ratio="45"] img{aspect-ratio:4/5}
+.work-card:hover img{transform:scale(1.04)}
+.work-meta{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:38px 16px 14px;
+  background:linear-gradient(to top, rgba(11,12,13,.88), rgba(11,12,13,0));
+}
+.work-name{font-family:var(--serif);font-size:17px;font-weight:700}
+.work-tag{font-size:12px;color:var(--text-dim);letter-spacing:.12em}
+.work-placeholder{
+  position:absolute;top:12px;right:12px;z-index:2;
+  font-size:11px;color:#EDEAE2;background:rgba(11,12,13,.72);
+  border:1px solid var(--line);border-radius:999px;padding:3px 12px;letter-spacing:.1em;
+}
+.works-note{
+  margin-top:26px;font-size:13px;color:var(--text-dim);text-align:center;
+}
+.works-note b{color:var(--accent);font-weight:500}
+
+/* 揭示动画 */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ===== 关于 ===== */
+.about-grid{display:grid;grid-template-columns:1fr;gap:44px}
+.about-name{
+  font-family:var(--serif);font-weight:900;font-size:clamp(44px,9vw,88px);letter-spacing:.05em;
+}
+.about-name .dot{color:var(--accent)}
+.about-role{font-size:13px;letter-spacing:.3em;color:var(--text-dim);text-transform:uppercase;margin-top:8px}
+.about-copy{margin-top:22px;font-size:15px;color:var(--text-dim);max-width:560px}
+.about-copy p+p{margin-top:14px}
+.placeholder-note{
+  margin-top:26px;border:1px dashed rgba(216,162,74,.45);border-radius:6px;
+  padding:18px 20px;font-size:13px;color:var(--text-dim);background:rgba(216,162,74,.05);
+}
+.placeholder-note b{color:var(--accent);font-weight:500}
+.about-facts{margin-top:34px;display:grid;grid-template-columns:1fr;gap:12px;max-width:560px}
+.fact{
+  display:flex;justify-content:space-between;gap:16px;
+  border-bottom:1px solid var(--line);padding:10px 0;
+  font-size:14px;
+}
+.fact dt{color:var(--text-dim)}
+.fact dd{text-align:right}
+
+/* ===== 申请 ===== */
+.apply-block{
+  border:1px solid var(--line);border-radius:8px;padding:34px 26px;
+  background:linear-gradient(160deg, rgba(216,162,74,.08), rgba(11,12,13,0) 55%);
+}
+.apply-title{font-family:var(--serif);font-weight:700;font-size:24px}
+.apply-desc{margin-top:12px;font-size:14px;color:var(--text-dim);max-width:640px}
+.apply-links{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:12px 26px;border-radius:999px;font-size:14px;letter-spacing:.06em;
+  border:1px solid var(--line);color:var(--text);
+  transition:border-color .2s,color .2s,background .2s;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-solid{background:var(--accent);border-color:var(--accent);color:#0B0C0D;font-weight:500}
+.btn-solid:hover{background:transparent;color:var(--accent)}
+
+/* ===== 页脚 ===== */
+.site-footer{
+  border-top:1px solid var(--line);
+  padding:38px 20px;text-align:center;
+  font-size:13px;color:var(--text-dim);
+}
+.site-footer .foot-brand{font-family:var(--serif);font-weight:700;color:var(--text);letter-spacing:.1em}
+.site-footer p{margin-top:8px}
+
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed;inset:0;z-index:80;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(6,7,8,.94);padding:20px;
+}
+.lightbox.open{display:flex}
+.lightbox-fig{max-width:min(1080px,100%);max-height:100%;text-align:center}
+.lightbox-fig img{
+  max-width:100%;max-height:78vh;object-fit:contain;
+  border-radius:4px;
+}
+.lightbox-cap{
+  margin-top:16px;color:var(--text-dim);font-size:13px;
+}
+.lightbox-cap b{color:var(--text);font-weight:500}
+.lightbox-close{
+  position:absolute;top:18px;right:20px;width:44px;height:44px;
+  background:none;border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:20px;
+}
+.lightbox-close:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ===== 响应式（移动优先，桌面扩展） ===== */
+@media (min-width:640px){
+  .works-grid{grid-template-columns:repeat(2,1fr);gap:22px}
+  .about-grid{grid-template-columns:1fr 1fr;gap:60px}
+  .about-facts{grid-template-columns:1fr 1fr;gap:12px 40px}
+  .about-facts{display:grid}
+}
+@media (min-width:960px){
+  .nav-links{display:flex}
+  .menu-btn{display:none}
+  .works-grid{grid-template-columns:repeat(3,1fr)}
+  .section{padding:120px 30px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .scroll-hint{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ===== 顶栏 ===== -->
+<header class="site-header" id="siteHeader">
+  <a class="brand" href="#home">REBIT<span class="dot">.</span></a>
+  <nav class="nav-links" id="navLinks" aria-label="主导航">
+    <a href="#works" class="nav-item">作品</a>
+    <a href="#about" class="nav-item">关于</a>
+    <a href="#apply" class="nav-item">申请</a>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false">
+    <span></span>
+  </button>
+</header>
+
+<!-- 移动菜单 -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="菜单">
+  <button class="close-btn" id="menuClose" aria-label="关闭菜单">×</button>
+  <a href="#works">作品</a>
+  <a href="#about">关于</a>
+  <a href="#apply">申请</a>
+</div>
+
+<main>
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="home">
+    <img class="hero-bg" src="assets/hero.jpg" alt="城市夜景长曝光，车流光轨" fetchpriority="high">
+    <div class="hero-content">
+      <h1 class="hero-name">REBIT<span class="dot">.</span></h1>
+      <p class="hero-sub">创意摄影 · Creative Photography</p>
+      <p class="hero-line">以镜头实验光影、结构与情绪。目前正在申请视觉中国签约供稿人。</p>
+      <a class="hero-cta" href="#works">查看作品</a>
+    </div>
+    <div class="scroll-hint" aria-hidden="true"></div>
+  </section>
+
+  <!-- ===== 作品集 ===== -->
+  <section class="section" id="works">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-index">01</span>
+        <h2 class="sec-title">作品集</h2>
+        <span class="sec-en">Portfolio</span>
+      </div>
+      <div class="works-grid">
+        <figure class="work-card reveal" data-ratio="34" data-name="逆光剪影" data-tag="人像 / 光影">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work1-silhouette.jpg" alt="逆光人像剪影，光束中的尘埃" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">逆光剪影</span>
+            <span class="work-tag">人像 / 光影</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-ratio="43" data-name="几何光影" data-tag="建筑 / 抽象">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work2-geometry.jpg" alt="建筑墙面硬光几何，明暗对比" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">几何光影</span>
+            <span class="work-tag">建筑 / 抽象</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-ratio="11" data-name="水珠微距" data-tag="微距 / 实验">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work3-macro.jpg" alt="玻璃水珠折射彩色光线，微距特写" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">水珠微距</span>
+            <span class="work-tag">微距 / 实验</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-ratio="34" data-name="山峦晨雾" data-tag="风光 / 氛围">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work4-mist.jpg" alt="层叠山峦在晨雾中若隐若现" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">山峦晨雾</span>
+            <span class="work-tag">风光 / 氛围</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-ratio="169" data-name="极简线条" data-tag="建筑 / 极简">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work5-minimal.jpg" alt="建筑结构线条与天空负空间" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">极简线条</span>
+            <span class="work-tag">建筑 / 极简</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-ratio="45" data-name="多重曝光" data-tag="夜景 / 实验">
+          <span class="work-placeholder">示例占位图</span>
+          <img src="assets/work6-double.jpg" alt="城市夜景与植物剪影多重曝光叠加" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">多重曝光</span>
+            <span class="work-tag">夜景 / 实验</span>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="works-note">当前为<b>示例占位图</b>，用于演示版式 —— 上传真实作品后我会逐张替换并更新标题与说明。</p>
+    </div>
+  </section>
+
+  <!-- ===== 关于 ===== -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-index">02</span>
+        <h2 class="sec-title">关于</h2>
+        <span class="sec-en">About</span>
+      </div>
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="about-name">REBIT<span class="dot">.</span></p>
+          <p class="about-role">创意摄影 Creative Photography</p>
+          <div class="about-copy">
+            <p>一名以光影为语言、以镜头为笔的创意摄影创作者，正在申请视觉中国签约供稿人。</p>
+            <p>创作围绕光影、结构与情绪展开，在现实与想象之间寻找新的观看方式。</p>
+          </div>
+          <div class="placeholder-note">
+            <b>占位区域：</b>以上简介为占位文案。请提供你的真实摄影师简介（经历、理念、拍摄方向），我会替换此处内容。
+          </div>
+        </div>
+        <dl class="about-facts reveal">
+          <div class="fact"><dt>署名</dt><dd>REBIT</dd></div>
+          <div class="fact"><dt>拍摄方向</dt><dd>创意摄影</dd></div>
+          <div class="fact"><dt>设备</dt><dd>待补充</dd></div>
+          <div class="fact"><dt>所在地</dt><dd>待补充</dd></div>
+          <div class="fact"><dt>一句话简介</dt><dd>待补充</dd></div>
+          <div class="fact"><dt>联系邮箱</dt><dd>待补充</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 申请 ===== -->
+  <section class="section" id="apply">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-index">03</span>
+        <h2 class="sec-title">供稿申请</h2>
+        <span class="sec-en">Contributor</span>
+      </div>
+      <div class="apply-block reveal">
+        <h3 class="apply-title">正在申请视觉中国签约供稿人</h3>
+        <p class="apply-desc">
+          视觉中国（VCG）是面向全球的内容版权交易平台，签约供稿人需年满 18 周岁、具备原创作品的拍摄能力并提交作品审核。
+          本站用于集中展示本人的创意摄影作品，作为申请材料的补充呈现。
+        </p>
+        <div class="apply-links">
+          <a class="btn btn-solid" href="https://www.vcg.com/contributors" target="_blank" rel="noopener">前往视觉中国供稿人页面</a>
+          <a class="btn" href="#works">回看作品</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p class="foot-brand">REBIT<span style="color:var(--accent)">.</span></p>
+  <p>© 2026 REBIT · 创意摄影作品集 · 本站开源部署于 GitHub Pages</p>
+</footer>
+
+<!-- ===== Lightbox ===== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品大图">
+  <button class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button>
+  <figure class="lightbox-fig">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox-cap" id="lightboxCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- 顶栏滚动态 ---- */
+  var header = document.getElementById("siteHeader");
+  var onScroll = function(){
+    if(window.scrollY > 10){ header.classList.add("scrolled"); }
+    else{ header.classList.remove("scrolled"); }
+  };
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---- 移动菜单 ---- */
+  var menuBtn = document.getElementById("menuBtn");
+  var mobileMenu = document.getElementById("mobileMenu");
+  var menuClose = document.getElementById("menuClose");
+  var menuLinks = mobileMenu.querySelectorAll("a");
+  var setMenu = function(open){
+    mobileMenu.classList.toggle("open", open);
+    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if(open){ menuClose.focus(); }
+  };
+  menuBtn.addEventListener("click", function(){ setMenu(true); });
+  menuClose.addEventListener("click", function(){ setMenu(false); });
+  menuLinks.forEach(function(link){
+    link.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && mobileMenu.classList.contains("open")){ setMenu(false); }
+  });
+
+  /* ---- Scroll-spy 导航高亮 ---- */
+  var navItems = Array.prototype.slice.call(document.querySelectorAll(".nav-item"));
+  var sections = ["works","about","apply"].map(function(id){ return document.getElementById(id); });
+  var spy = function(){
+    var pos = window.scrollY + window.innerHeight * 0.4;
+    var current = null;
+    sections.forEach(function(sec){
+      if(sec && sec.offsetTop <= pos){ current = sec.id; }
+    });
+    navItems.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+    });
+  };
+  window.addEventListener("scroll", spy, {passive:true});
+  spy();
+
+  /* ---- Lightbox ---- */
+  var lb = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lightboxImg");
+  var lbCap = document.getElementById("lightboxCap");
+  var lbClose = document.getElementById("lightboxClose");
+  var lastFocus = null;
+  var openLightbox = function(card){
+    var img = card.querySelector("img");
+    var name = card.getAttribute("data-name") || "";
+    var tag = card.getAttribute("data-tag") || "";
+    lastFocus = document.activeElement;
+    lbImg.src = img.getAttribute("src");
+    lbImg.alt = img.alt || name;
+    lbCap.innerHTML = "<b>" + name + "</b> · " + tag;
+    lb.classList.add("open");
+    lbClose.focus();
+  };
+  var closeLightbox = function(){
+    lb.classList.remove("open");
+    lbImg.src = "";
+    if(lastFocus){ lastFocus.focus(); }
+  };
+  document.querySelectorAll(".work-card").forEach(function(card){
+    card.addEventListener("click", function(){ openLightbox(card); });
+    card.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openLightbox(card);
+      }
+    });
+  });
+  lbClose.addEventListener("click", closeLightbox);
+  lb.addEventListener("click", function(e){
+    if(e.target === lb){ closeLightbox(); }
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && lb.classList.contains("open")){ closeLightbox(); }
+  });
+
+  /* ---- 卡片揭示动画 ---- */
+  var revealEls = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12});
+    revealEls.forEach(function(el){ io.observe(el); });
+  }else{
+    revealEls.forEach(function(el){ el.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>
