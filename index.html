@@ -150,21 +150,17 @@ button{font-family:inherit;cursor:pointer}
 
 /* ===== 作品集 ===== */
 .works-grid{
-  display:grid;grid-template-columns:repeat(1,1fr);gap:18px;
+  columns:1;column-gap:18px;
 }
 .work-card{
   position:relative;overflow:hidden;border:1px solid var(--line);border-radius:4px;
   background:var(--panel);cursor:pointer;
+  break-inside:avoid;margin-bottom:18px;
 }
 .work-card img{
-  width:100%;aspect-ratio:1/1;object-fit:cover;
+  width:100%;height:auto;
   transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .6s;
 }
-.work-card[data-ratio="34"] img{aspect-ratio:3/4}
-.work-card[data-ratio="43"] img{aspect-ratio:4/3}
-.work-card[data-ratio="11"] img{aspect-ratio:1/1}
-.work-card[data-ratio="169"] img{aspect-ratio:16/9}
-.work-card[data-ratio="45"] img{aspect-ratio:4/5}
 .work-card:hover img{transform:scale(1.04)}
 .work-meta{
   position:absolute;left:0;right:0;bottom:0;z-index:2;
@@ -174,15 +170,6 @@ button{font-family:inherit;cursor:pointer}
 }
 .work-name{font-family:var(--serif);font-size:17px;font-weight:700}
 .work-tag{font-size:12px;color:var(--text-dim);letter-spacing:.12em}
-.work-placeholder{
-  position:absolute;top:12px;right:12px;z-index:2;
-  font-size:11px;color:#EDEAE2;background:rgba(11,12,13,.72);
-  border:1px solid var(--line);border-radius:999px;padding:3px 12px;letter-spacing:.1em;
-}
-.works-note{
-  margin-top:26px;font-size:13px;color:var(--text-dim);text-align:center;
-}
-.works-note b{color:var(--accent);font-weight:500}
 
 /* 揭示动画 */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
@@ -262,15 +249,15 @@ button{font-family:inherit;cursor:pointer}
 
 /* ===== 响应式（移动优先，桌面扩展） ===== */
 @media (min-width:640px){
-  .works-grid{grid-template-columns:repeat(2,1fr);gap:22px}
+  .works-grid{columns:2;column-gap:22px}
+  .work-card{margin-bottom:22px}
   .about-grid{grid-template-columns:1fr 1fr;gap:60px}
   .about-facts{grid-template-columns:1fr 1fr;gap:12px 40px}
-  .about-facts{display:grid}
 }
 @media (min-width:960px){
   .nav-links{display:flex}
   .menu-btn{display:none}
-  .works-grid{grid-template-columns:repeat(3,1fr)}
+  .works-grid{columns:3}
   .section{padding:120px 30px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -308,7 +295,7 @@ button{font-family:inherit;cursor:pointer}
 <main>
   <!-- ===== Hero ===== -->
   <section class="hero" id="home">
-    <img class="hero-bg" src="assets/hero.jpg" alt="城市夜景长曝光，车流光轨" fetchpriority="high">
+    <img class="hero-bg" src="assets/hero.jpg" alt="暮色中飞鸟掠过海面，金色逆光" fetchpriority="high">
     <div class="hero-content">
       <h1 class="hero-name">REBIT<span class="dot">.</span></h1>
       <p class="hero-sub">创意摄影 · Creative Photography</p>
@@ -327,56 +314,63 @@ button{font-family:inherit;cursor:pointer}
         <span class="sec-en">Portfolio</span>
       </div>
       <div class="works-grid">
-        <figure class="work-card reveal" data-ratio="34" data-name="逆光剪影" data-tag="人像 / 光影">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work1-silhouette.jpg" alt="逆光人像剪影，光束中的尘埃" loading="lazy">
+        <figure class="work-card reveal" data-name="玄凤肖像" data-tag="生灵 / 肖像">
+          <img src="assets/work1-aviary.jpg" alt="玄凤鹦鹉肖像特写，柔和奶油色背景" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">逆光剪影</span>
-            <span class="work-tag">人像 / 光影</span>
+            <span class="work-name">玄凤肖像</span>
+            <span class="work-tag">生灵 / 肖像</span>
           </figcaption>
         </figure>
-        <figure class="work-card reveal" data-ratio="43" data-name="几何光影" data-tag="建筑 / 抽象">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work2-geometry.jpg" alt="建筑墙面硬光几何，明暗对比" loading="lazy">
+        <figure class="work-card reveal" data-name="窗边橘影" data-tag="生灵 / 色彩">
+          <img src="assets/work2-cat.jpg" alt="橘猫坐在木板上，绿墙背景" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">几何光影</span>
-            <span class="work-tag">建筑 / 抽象</span>
+            <span class="work-name">窗边橘影</span>
+            <span class="work-tag">生灵 / 色彩</span>
           </figcaption>
         </figure>
-        <figure class="work-card reveal" data-ratio="11" data-name="水珠微距" data-tag="微距 / 实验">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work3-macro.jpg" alt="玻璃水珠折射彩色光线，微距特写" loading="lazy">
+        <figure class="work-card reveal" data-name="海风" data-tag="人像 / 活力">
+          <img src="assets/work3-seabreeze.jpg" alt="海边张开双臂的女生，蓝天白云" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">水珠微距</span>
-            <span class="work-tag">微距 / 实验</span>
+            <span class="work-name">海风</span>
+            <span class="work-tag">人像 / 活力</span>
           </figcaption>
         </figure>
-        <figure class="work-card reveal" data-ratio="34" data-name="山峦晨雾" data-tag="风光 / 氛围">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work4-mist.jpg" alt="层叠山峦在晨雾中若隐若现" loading="lazy">
+        <figure class="work-card reveal" data-name="海平线" data-tag="风景 / 氛围">
+          <img src="assets/work4-horizon.jpg" alt="海面上两人剪影，金色水面倒影" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">山峦晨雾</span>
-            <span class="work-tag">风光 / 氛围</span>
+            <span class="work-name">海平线</span>
+            <span class="work-tag">风景 / 氛围</span>
           </figcaption>
         </figure>
-        <figure class="work-card reveal" data-ratio="169" data-name="极简线条" data-tag="建筑 / 极简">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work5-minimal.jpg" alt="建筑结构线条与天空负空间" loading="lazy">
+        <figure class="work-card reveal" data-name="群鸥" data-tag="风景 / 动态">
+          <img src="assets/work5-flock.jpg" alt="成群海鸥在蓝天下飞翔" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">极简线条</span>
-            <span class="work-tag">建筑 / 极简</span>
+            <span class="work-name">群鸥</span>
+            <span class="work-tag">风景 / 动态</span>
           </figcaption>
         </figure>
-        <figure class="work-card reveal" data-ratio="45" data-name="多重曝光" data-tag="夜景 / 实验">
-          <span class="work-placeholder">示例占位图</span>
-          <img src="assets/work6-double.jpg" alt="城市夜景与植物剪影多重曝光叠加" loading="lazy">
+        <figure class="work-card reveal" data-name="竹间石兽" data-tag="静物 / 庭园">
+          <img src="assets/work6-stone.jpg" alt="竹林中石雕顶端停着一只白鸽" loading="lazy">
           <figcaption class="work-meta">
-            <span class="work-name">多重曝光</span>
-            <span class="work-tag">夜景 / 实验</span>
+            <span class="work-name">竹间石兽</span>
+            <span class="work-tag">静物 / 庭园</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="砖墙与白裙" data-tag="建筑 / 人像">
+          <img src="assets/work7-brick.jpg" alt="女生走过砖墙围合的庭院石阶" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">砖墙与白裙</span>
+            <span class="work-tag">建筑 / 人像</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="庭园台阶" data-tag="人像 / 庭园">
+          <img src="assets/work8-garden.jpg" alt="白裙女生站在露台花园的台阶上" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">庭园台阶</span>
+            <span class="work-tag">人像 / 庭园</span>
           </figcaption>
         </figure>
       </div>
-      <p class="works-note">当前为<b>示例占位图</b>，用于演示版式 —— 上传真实作品后我会逐张替换并更新标题与说明。</p>
     </div>
   </section>
 
@@ -403,7 +397,7 @@ button{font-family:inherit;cursor:pointer}
         <dl class="about-facts reveal">
           <div class="fact"><dt>署名</dt><dd>REBIT</dd></div>
           <div class="fact"><dt>拍摄方向</dt><dd>创意摄影</dd></div>
-          <div class="fact"><dt>设备</dt><dd>待补充</dd></div>
+          <div class="fact"><dt>设备</dt><dd>FUJIFILM X-M5</dd></div>
           <div class="fact"><dt>所在地</dt><dd>待补充</dd></div>
           <div class="fact"><dt>一句话简介</dt><dd>待补充</dd></div>
           <div class="fact"><dt>联系邮箱</dt><dd>待补充</dd></div>
