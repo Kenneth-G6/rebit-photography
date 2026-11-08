@@ -171,6 +171,26 @@ button{font-family:inherit;cursor:pointer}
 .work-name{font-family:var(--serif);font-size:17px;font-weight:700}
 .work-tag{font-size:12px;color:var(--text-dim);letter-spacing:.12em}
 
+/* ===== 图片下载防护 ===== */
+.work-card,.work-card img,.lightbox-fig img{
+  -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-user-drag:none;user-drag:none;
+}
+/* 透明遮罩：拦截图片上的右键与长按菜单 */
+.work-card::after{
+  content:"";position:absolute;inset:0;z-index:1;background:transparent;
+}
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,18px);
+  z-index:95;padding:11px 20px;border-radius:999px;
+  background:rgba(22,24,27,.97);border:1px solid var(--line);
+  color:var(--text);font-size:13px;letter-spacing:.04em;white-space:nowrap;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s,transform .25s,visibility .25s;
+}
+.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+
 /* 揭示动画 */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
@@ -440,6 +460,62 @@ button{font-family:inherit;cursor:pointer}
             <span class="work-tag">生灵 / 特写</span>
           </figcaption>
         </figure>
+        <figure class="work-card reveal" data-name="庭院回廊" data-tag="人像 / 庭院">
+          <img src="assets/work19.jpg" alt="白裙女子走过砖墙围合的庭院石阶" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">庭院回廊</span>
+            <span class="work-tag">人像 / 庭院</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="露台阶梯" data-tag="人像 / 庭园">
+          <img src="assets/work20.jpg" alt="白裙女子站在露台花园的阶梯上" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">露台阶梯</span>
+            <span class="work-tag">人像 / 庭园</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="侧影" data-tag="人像 / 环境">
+          <img src="assets/work21.jpg" alt="长发女子侧背影，远处山城建筑" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">侧影</span>
+            <span class="work-tag">人像 / 环境</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="石径" data-tag="人像 / 街拍">
+          <img src="assets/work22.jpg" alt="白裙女子站在石板路上，一旁是街边小店" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">石径</span>
+            <span class="work-tag">人像 / 街拍</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="楼梯间" data-tag="人像 / 室内">
+          <img src="assets/work23.jpg" alt="浅绿旗袍女子倚在楼梯栏杆旁" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">楼梯间</span>
+            <span class="work-tag">人像 / 室内</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="红砖前" data-tag="建筑 / 人像">
+          <img src="assets/work24.jpg" alt="白裙女子背影站在红砖墙前" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">红砖前</span>
+            <span class="work-tag">建筑 / 人像</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="靠近" data-tag="人像 / 双人">
+          <img src="assets/work25.jpg" alt="两人穿白色外套相靠近的合影" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">靠近</span>
+            <span class="work-tag">人像 / 双人</span>
+          </figcaption>
+        </figure>
+        <figure class="work-card reveal" data-name="海边饮品" data-tag="人像 / 生活">
+          <img src="assets/work26.jpg" alt="女子手持饮品站在海边" loading="lazy">
+          <figcaption class="work-meta">
+            <span class="work-name">海边饮品</span>
+            <span class="work-tag">人像 / 生活</span>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -502,7 +578,10 @@ button{font-family:inherit;cursor:pointer}
 <footer class="site-footer">
   <p class="foot-brand">REBIT<span style="color:var(--accent)">.</span></p>
   <p>© 2026 REBIT · 创意摄影作品集 · 本站开源部署于 GitHub Pages</p>
+  <p class="foot-rights">站内全部摄影作品版权归 REBIT 所有 · 未经授权禁止下载、转载或商业使用</p>
 </footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== Lightbox ===== -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品大图">
@@ -615,6 +694,36 @@ button{font-family:inherit;cursor:pointer}
   }else{
     revealEls.forEach(function(el){ el.classList.add("in"); });
   }
+
+  /* ---- 图片下载防护 ---- */
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  var notify = function(msg){
+    if(!toastEl){ return; }
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 2400);
+  };
+  var isProtected = function(el){
+    if(!el || !el.closest){ return false; }
+    return !!(el.closest(".work-card") || el.closest(".lightbox-fig") || el.tagName === "IMG");
+  };
+  document.addEventListener("contextmenu", function(e){
+    if(isProtected(e.target)){
+      e.preventDefault();
+      notify("作品受版权保护 · 禁止下载或转载");
+    }
+  });
+  document.addEventListener("dragstart", function(e){
+    if(e.target && e.target.tagName === "IMG"){ e.preventDefault(); }
+  });
+  document.addEventListener("keydown", function(e){
+    if((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")){
+      e.preventDefault();
+      notify("页面与作品受版权保护 · 禁止保存");
+    }
+  });
 })();
 </script>
 </body>
