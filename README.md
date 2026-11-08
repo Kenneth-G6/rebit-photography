@@ -10,16 +10,21 @@ https://kenneth-g6.github.io/rebit-photography/
 
 ```
 ├── index.html   # 单文件网站（内联 CSS/JS，无框架）
-└── assets/      # 作品图片（当前为示例占位图，待替换为真实作品）
+└── assets/      # 9 张网页尺寸作品图（hero ×1 + 作品 ×8，68-347KB）
 ```
 
-## 替换作品照片
+## 作品与设备
 
-1. 将真实作品放入 `assets/`，建议统一为 JPG，文件名如 `work1-silhouette.jpg`；
-2. 编辑 `index.html` 中对应 `<img src="assets/...">` 路径、`alt` 文本、卡片标题与分类；
-3. 替换 hero 大图为 `assets/hero.jpg`；
-4. 移除作品卡片上的「示例占位图」标记与作品区底部提示；
-5. 更新「关于」板块的占位文案（简介、设备、所在地、一句话简介、联系邮箱）。
+- 摄影设备：FUJIFILM X-M5
+- 作品网格采用 CSS columns 瀑布流，保留原图构图比例（3:2 与 2:3 混排），不强制裁切
+- 当前收录：玄凤肖像、窗边橘影、海风、海平线、群鸥、竹间石兽、砖墙与白裙、庭园台阶
+
+## 替换 / 新增作品
+
+1. 新图放入 `assets/`，长边建议 1400-1600px、JPEG（quality 80 左右），hero 可用 2000px；
+2. 在 `index.html` 的 `.works-grid` 内按现有 `<figure class="work-card reveal">` 模版新增卡片，填写 `src` / `alt` / `data-name` / `data-tag` / 卡片标题与分类；
+3. 替换 hero 图：`assets/hero.jpg`；
+4. 同步「关于」板块信息（设备、所在地、一句话简介、联系邮箱）。
 
 ## 本地预览
 
@@ -27,8 +32,8 @@ https://kenneth-g6.github.io/rebit-photography/
 
 ## 部署
 
-仓库 `main` 分支根目录由 GitHub Pages 自动发布。
+仓库 `main` 分支根目录由 GitHub Pages 自动发布；推送后约 1 分钟内更新。
 
 ## 版权
 
-网站代码与占位示例图仅用于申请展示；替换真实作品后，图片版权归作者本人所有。
+站内全部摄影作品版权归作者 REBIT 所有，未经授权请勿转载或商用。含人物的作品在用于签约供稿前需确认肖像权授权。
